@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DAL\DAL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bogus" Version="35.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="bin\Debug\net7.0-windows\Bogus.dll" />
+      <Content Include="bin\Debug\net7.0-windows\DAL.dll" />
+      <Content Include="bin\Debug\net7.0-windows\DAL.pdb" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.EntityFrameworkCore.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.EntityFrameworkCore.Relational.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Caching.Abstractions.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Caching.Memory.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.DependencyInjection.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Logging.Abstractions.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Logging.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Options.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Microsoft.Extensions.Primitives.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Npgsql.dll" />
+      <Content Include="bin\Debug\net7.0-windows\Npgsql.EntityFrameworkCore.PostgreSQL.dll" />
+      <Content Include="bin\Debug\net7.0-windows\WpfAppThread.deps.json" />
+      <Content Include="bin\Debug\net7.0-windows\WpfAppThread.dll" />
+      <Content Include="bin\Debug\net7.0-windows\WpfAppThread.exe" />
+      <Content Include="bin\Debug\net7.0-windows\WpfAppThread.pdb" />
+      <Content Include="bin\Debug\net7.0-windows\WpfAppThread.runtimeconfig.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="bin\**" />
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="bin\**" />
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="bin\**" />
+      <Page Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="bin\**" />
+      <None Remove="obj\**" />
+    </ItemGroup>
+
+</Project>

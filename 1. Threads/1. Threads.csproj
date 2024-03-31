@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>_1._Threads</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+      <Compile Remove="bin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+      <EmbeddedResource Remove="bin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+      <None Remove="bin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="bin\Debug\net7.0\1. Threads.deps.json" />
+      <Content Include="bin\Debug\net7.0\1. Threads.dll" />
+      <Content Include="bin\Debug\net7.0\1. Threads.exe" />
+      <Content Include="bin\Debug\net7.0\1. Threads.pdb" />
+      <Content Include="bin\Debug\net7.0\1. Threads.runtimeconfig.json" />
+    </ItemGroup>
+
+</Project>
