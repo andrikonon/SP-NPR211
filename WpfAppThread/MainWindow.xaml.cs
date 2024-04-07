@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Bogus;
 using DAL.Data;
 using DAL.Data.Entities;
+using DAL.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace WpfAppThread;
@@ -20,7 +21,7 @@ namespace WpfAppThread;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private bool _isCancelled = false;
+    private static ManualResetEvent _manualResetEvent = new(false);
     private bool _isSuspended = false;
     
     public MainWindow()
@@ -30,7 +31,7 @@ public partial class MainWindow : Window
 
     private void btnRun_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("Add items " + txtCount.Text);
+        // MessageBox.Show("Add items " + txtCount.Text);
         btnCancel.IsEnabled = true;
         btnSuspend.IsEnabled = true;
         btnSuspend.Content = "Призупинити";
@@ -38,63 +39,61 @@ public partial class MainWindow : Window
         double count = double.Parse(txtCount.Text);
         var thread = new Thread(() => InsertItems(count));
         thread.Start();
+        
         btnRun.IsEnabled = false;
+        _manualResetEvent.Set();
     }
 
     private void InsertItems(double count)
     {
-        var faker = new Faker<UserDbEntity>()
-            .RuleFor(user => user.Id, _ => Guid.NewGuid())
-            .RuleFor(user => user.FirstName, f => f.Name.FirstName())
-            .RuleFor(user => user.LastName, f => f.Name.LastName())
-            .RuleFor(user => user.Email, (f, user) => f.Internet.Email(user.FirstName, user.LastName))
-            .RuleFor(user => user.PasswordHash, f => f.Internet.Password().GetHashCode());
-        
+        UserService userService = new();
+        userService.InsertUserEvent += UserService_InsertUserEvent;
         Dispatcher.Invoke(() =>
         {
-            pbStatus.Value = 0;
-            pbStatus.Maximum = count;
+            // pbStatus.Value = 0;
+            pbStatus.Maximum = (int)count;
         });
-        using ApplicationDbContext context = new();
-        int i = 0;
-        while (i < count)
+
+        
+        userService.InsertRandomUser((int)count);
+
+        Dispatcher.Invoke(() =>
         {
-            if (_isCancelled)
-            {
-                _isCancelled = false;
-                Dispatcher.Invoke(() =>
-                {
-                    pbStatus.Value = 0;
-                    btnSuspend.IsEnabled = false;
-                });
-                break;
-            }
-
-            if (_isSuspended)
-            {
-                Thread.Sleep(1000);
-                continue;
-            }
-            Dispatcher.Invoke(() => { pbStatus.Value++; });
-            context.Users.Add(faker.Generate());
-            Thread.Sleep(1000);
-            i++;
-        }
-
-        context.SaveChanges();
-
-        Dispatcher.Invoke(() => { btnRun.IsEnabled = true; });
+            btnRun.IsEnabled = true;
+            // btnSuspend.IsEnabled = false;
+        });
     }
 
     private void BtnCancel_Click(object sender, RoutedEventArgs e)
     {
-        _isCancelled = true;
+        UserService userService = new();
+        int count = (int)pbStatus.Value;
+        userService.DeleteLastUsers(count);
+
+        pbStatus.Value = 0;
+        
         btnCancel.IsEnabled = false;
+        btnSuspend.IsEnabled = false;
     }
 
     private void BtnSuspend_Click(object sender, RoutedEventArgs e)
     {
-        _isSuspended = !_isSuspended;
+        if (_isSuspended)
+        {
+            _manualResetEvent.Set();
+        }
+        else
+        {
+            _manualResetEvent.Reset();
+        }
         btnSuspend.Content = _isSuspended ? "Продовжити" : "Призупинити";
+
+        _isSuspended = !_isSuspended;
+    }
+
+    private void UserService_InsertUserEvent(int count)
+    {
+        Dispatcher.Invoke(() => { pbStatus.Value = count; });
+        _manualResetEvent.WaitOne(Timeout.Infinite);
     }
 }

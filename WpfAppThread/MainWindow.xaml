@@ -15,12 +15,12 @@
         <Button Name="btnCancel" 
                 IsEnabled="False"
                 Content="Скасувати" HorizontalAlignment="Left"
-                Margin="372, 42, 0, 0" VerticalAlignment="Top"
+                Margin="521, 42, 0, 0" VerticalAlignment="Top"
                 Height="39" Width="129" FontSize="14" Click="BtnCancel_Click"/>
         <Button Name="btnSuspend" 
                 IsEnabled="False"
                 Content="Призупинити" HorizontalAlignment="Left"
-                Margin="521, 42, 0, 0" VerticalAlignment="Top"
+                Margin="372, 42, 0, 0" VerticalAlignment="Top"
                 Height="39" Width="129" FontSize="14" Click="BtnSuspend_Click"/>
         <TextBox Name="txtCount" HorizontalAlignment="Left" Margin="40, 42, 0, 0"
                  FontSize="18" TextWrapping="Wrap" Text="10"
