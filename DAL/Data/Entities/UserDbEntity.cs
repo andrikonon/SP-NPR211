@@ -16,4 +16,6 @@ public class UserDbEntity
     public string Email { get; set; }
     [Required]
     public int PasswordHash { get; set; }
+    [Required]
+    public DateTime DateCreated { get; set; }
 }
