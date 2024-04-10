@@ -23,6 +23,9 @@ public partial class MainWindow : Window
 {
     private static ManualResetEvent _manualResetEvent = new(false);
     private bool _isSuspended = false;
+    private Thread _insertThread;
+    private CancellationTokenSource _ctSource;
+    private CancellationToken _cancellationToken;
     
     public MainWindow()
     {
@@ -31,14 +34,16 @@ public partial class MainWindow : Window
 
     private void btnRun_Click(object sender, RoutedEventArgs e)
     {
+        _ctSource = new();
+        _cancellationToken = _ctSource.Token;
         // MessageBox.Show("Add items " + txtCount.Text);
         btnCancel.IsEnabled = true;
         btnSuspend.IsEnabled = true;
         btnSuspend.Content = "Призупинити";
         
         double count = double.Parse(txtCount.Text);
-        var thread = new Thread(() => InsertItems(count));
-        thread.Start();
+        _insertThread = new Thread(() => InsertItems(count));
+        _insertThread.Start();
         
         btnRun.IsEnabled = false;
         _manualResetEvent.Set();
@@ -66,12 +71,10 @@ public partial class MainWindow : Window
 
     private void BtnCancel_Click(object sender, RoutedEventArgs e)
     {
-        UserService userService = new();
-        int count = (int)pbStatus.Value;
-        userService.DeleteLastUsers(count);
-
+        _ctSource.Cancel();
         pbStatus.Value = 0;
-        
+
+        btnRun.IsEnabled = true;
         btnCancel.IsEnabled = false;
         btnSuspend.IsEnabled = false;
     }
@@ -86,7 +89,7 @@ public partial class MainWindow : Window
         {
             _manualResetEvent.Reset();
         }
-        btnSuspend.Content = _isSuspended ? "Продовжити" : "Призупинити";
+        btnSuspend.Content = _isSuspended ? "Призупинити" : "Продовжити";
 
         _isSuspended = !_isSuspended;
     }

@@ -10,11 +10,17 @@ public class UserService
 {
     private readonly ApplicationDbContext _context;
     public event UserEvents.UserInsertItemDelegate InsertUserEvent;
+    private CancellationToken _cancellationToken;
 
     public UserService()
     {
         _context = new ApplicationDbContext();
         _context.Database.Migrate();
+    }
+
+    public UserService(CancellationToken token) : this()
+    {
+        _cancellationToken = token;
     }
 
     public void InsertRandomUser(int count)
@@ -28,23 +34,31 @@ public class UserService
 
         var users = faker.Generate(count);
         int i = 0;
-        foreach (var user in users)
+        using (var transaction = _context.Database.BeginTransaction())
         {
-            user.DateCreated = DateTime.UtcNow;
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            InsertUserEvent.Invoke(++i);
-        }
-    }
+            try
+            {
+                foreach (var user in users)
+                {
+                    user.DateCreated = DateTime.UtcNow;
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+                    InsertUserEvent(++i);
 
-    public void DeleteLastUsers(int count)
-    {
-        for (var _ = 0; _ < count; _++)
-        {
-            var last = _context.Users.OrderBy(user => user.DateCreated).Last();
-            _context.Users.Remove(last);
-            _context.SaveChanges();
+                    if (_cancellationToken.IsCancellationRequested)
+                    {
+                        throw new Exception("Cansel operation");
+                    }
+                }
+
+                // Commit the transaction
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback(); // Rollback the transaction if an exception occurs
+                InsertRandomUser(0); //операція була скасована
+            }
         }
-        
     }
 }
