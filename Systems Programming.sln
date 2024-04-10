@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppThread", "WpfAppThrea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{91C4E5B9-9888-406D-B922-91C5BE573466}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{E33221B4-E97C-4192-9209-38ACD0ABB931}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{91C4E5B9-9888-406D-B922-91C5BE573466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91C4E5B9-9888-406D-B922-91C5BE573466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91C4E5B9-9888-406D-B922-91C5BE573466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33221B4-E97C-4192-9209-38ACD0ABB931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33221B4-E97C-4192-9209-38ACD0ABB931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33221B4-E97C-4192-9209-38ACD0ABB931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33221B4-E97C-4192-9209-38ACD0ABB931}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

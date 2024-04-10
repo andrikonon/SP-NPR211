@@ -25,6 +25,11 @@
         <TextBox Name="txtCount" HorizontalAlignment="Left" Margin="40, 42, 0, 0"
                  FontSize="18" TextWrapping="Wrap" Text="10"
                  VerticalAlignment="Top" Width="158" />
+        <Button Name="btnAddDragons"
+                Content="Додати 1000 драконів" 
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                Margin="40 150 0 0"
+                Height="39" Width="200" FontSize="14" Click="BtnAddDragons_OnClick" />
         
         <Grid HorizontalAlignment="Left" Height="25"
               Margin="26, 363 0, 0" VerticalAlignment="Top"

@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,7 +16,9 @@ using Bogus;
 using DAL.Data;
 using DAL.Data.Entities;
 using DAL.Services;
+using Helpers;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace WpfAppThread;
 
@@ -26,7 +32,7 @@ public partial class MainWindow : Window
     private Thread _insertThread;
     private CancellationTokenSource _ctSource;
     private CancellationToken _cancellationToken;
-    
+
     public MainWindow()
     {
         InitializeComponent();
@@ -40,11 +46,11 @@ public partial class MainWindow : Window
         btnCancel.IsEnabled = true;
         btnSuspend.IsEnabled = true;
         btnSuspend.Content = "Призупинити";
-        
+
         double count = double.Parse(txtCount.Text);
         _insertThread = new Thread(() => InsertItems(count));
         _insertThread.Start();
-        
+
         btnRun.IsEnabled = false;
         _manualResetEvent.Set();
     }
@@ -59,7 +65,7 @@ public partial class MainWindow : Window
             pbStatus.Maximum = (int)count;
         });
 
-        
+
         userService.InsertRandomUser((int)count);
 
         Dispatcher.Invoke(() =>
@@ -89,6 +95,7 @@ public partial class MainWindow : Window
         {
             _manualResetEvent.Reset();
         }
+
         btnSuspend.Content = _isSuspended ? "Призупинити" : "Продовжити";
 
         _isSuspended = !_isSuspended;
@@ -98,5 +105,58 @@ public partial class MainWindow : Window
     {
         Dispatcher.Invoke(() => { pbStatus.Value = count; });
         _manualResetEvent.WaitOne(Timeout.Infinite);
+    }
+
+    private void BtnAddDragons_OnClick(object sender, RoutedEventArgs e)
+    {
+        const int count = 1000;
+        Dispatcher.Invoke(() =>
+        {
+            pbStatus.Value = 0;
+            pbStatus.Maximum = 2 * count;
+        });
+        
+        UserService userService = new();
+        userService.InsertUserEvent += UserService_InsertUserEvent;
+        List<Thread> threads = new();
+
+        Stopwatch stopwatch = new Stopwatch();
+        
+        stopwatch.Start();
+        
+        for (int _ = 0; _ < count; _++)
+        {
+            Thread thread = new Thread(() =>
+            {
+                ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
+            });
+            thread.Start();
+            threads.Add(thread);
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+        
+        stopwatch.Stop();
+        var lengthThreads = stopwatch.Elapsed;
+        
+        
+        stopwatch.Restart();
+        
+        for (int _ = 0; _ < count; _++)
+        {
+            ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
+        }
+
+        stopwatch.Stop();
+        var lengthSync = stopwatch.Elapsed;
+        
+        var ratio = lengthSync / lengthThreads;
+        
+        MessageBox.Show(
+            $"Час із потоками: {lengthThreads} \nЧас без потоків: {lengthSync}\nБез потоків повільніше у {ratio} разів",
+            "Результат");
     }
 }
