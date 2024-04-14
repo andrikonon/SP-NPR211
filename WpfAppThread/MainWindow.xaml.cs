@@ -36,6 +36,13 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        var time = Helpers.Timer.Time(() =>
+        {
+            var userService = new UserService();
+            var users = userService.GetUsers();
+        });
+        MessageBox.Show($"Час отримання {time}", "Результат");
     }
 
     private void btnRun_Click(object sender, RoutedEventArgs e)
@@ -120,38 +127,32 @@ public partial class MainWindow : Window
         userService.InsertUserEvent += UserService_InsertUserEvent;
         List<Thread> threads = new();
 
-        Stopwatch stopwatch = new Stopwatch();
-        
-        stopwatch.Start();
-        
-        for (int _ = 0; _ < count; _++)
+        var lengthThreads = Helpers.Timer.Time(() =>
         {
-            Thread thread = new Thread(() =>
+            for (int _ = 0; _ < count; _++)
+            {
+                Thread thread = new Thread(() =>
+                {
+                    ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
+                });
+                thread.Start();
+                threads.Add(thread);
+            }
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+        });
+
+
+        var lengthSync = Helpers.Timer.Time(() =>
+        {
+            for (int _ = 0; _ < count; _++)
             {
                 ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
-            });
-            thread.Start();
-            threads.Add(thread);
-        }
-
-        foreach (var thread in threads)
-        {
-            thread.Join();
-        }
-        
-        stopwatch.Stop();
-        var lengthThreads = stopwatch.Elapsed;
-        
-        
-        stopwatch.Restart();
-        
-        for (int _ = 0; _ < count; _++)
-        {
-            ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
-        }
-
-        stopwatch.Stop();
-        var lengthSync = stopwatch.Elapsed;
+            }
+        });
         
         var ratio = lengthSync / lengthThreads;
         

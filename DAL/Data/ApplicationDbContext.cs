@@ -11,7 +11,7 @@ public class ApplicationDbContext : DbContext
     {
         optionsBuilder
             // .UseNpgsql("Server=localhost;Port=5432;Database=monster;User Id=postgres;Password=123456;");
-            .UseSqlite("DataSource=monster.sqlite");
+            .UseSqlite(Constants.Database.ConnectionString);
         base.OnConfiguring(optionsBuilder);
     }
 }

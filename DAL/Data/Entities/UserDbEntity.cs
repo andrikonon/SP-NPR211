@@ -7,7 +7,7 @@ namespace DAL.Data.Entities;
 public class UserDbEntity
 {
     [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     [Required, StringLength(200)]
     public string FirstName { get; set; }
     [Required, StringLength(200)]
