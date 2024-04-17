@@ -10,5 +10,15 @@ public static class Timer
         action();
         sw.Stop();
         return sw.Elapsed;
+    }
+
+    public static async Task<TimeSpan> TimeAsync(Task task)
+    {
+        Stopwatch sw = Stopwatch.StartNew();
+        task.Start();
+        await task; // працює не зовсім так, як очікується і не можу знайти рішення
+        sw.Stop();
+        return sw.Elapsed;
     } 
+    
 }

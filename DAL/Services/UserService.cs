@@ -63,6 +63,11 @@ public class UserService
             }
         }
     }
+    
+    public Task InsertRandomUserAsync(int count)
+    {
+        return Task.Run(() => InsertRandomUser(count));
+    }
 
     public void InsertRandomUserDapper(int count)
     {
@@ -83,7 +88,11 @@ public class UserService
             conn.Execute(query, user);
             InsertUserEvent(++i);
         }
+    }
 
+    public Task InsertRandomUserDapperAsync(int count)
+    {
+        return Task.Run(() => InsertRandomUserDapper(count));
     }
 
     public IEnumerable<UserDbEntity> GetUsers()

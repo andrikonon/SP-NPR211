@@ -37,28 +37,39 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        var time = Helpers.Timer.Time(() =>
-        {
-            var userService = new UserService();
-            var users = userService.GetUsers();
-        });
-        MessageBox.Show($"Час отримання {time}", "Результат");
+        // var time = Helpers.Timer.Time(() =>
+        // {
+        //     var userService = new UserService();
+        //     var users = userService.GetUsers();
+        // });
+        // MessageBox.Show($"Час отримання {time}", "Результат");
     }
 
-    private void btnRun_Click(object sender, RoutedEventArgs e)
+    private async void btnRun_Click(object sender, RoutedEventArgs e)
     {
         _ctSource = new();
         _cancellationToken = _ctSource.Token;
         // MessageBox.Show("Add items " + txtCount.Text);
         btnCancel.IsEnabled = true;
         btnSuspend.IsEnabled = true;
+        btnRun.IsEnabled = false;
         btnSuspend.Content = "Призупинити";
 
         double count = double.Parse(txtCount.Text);
-        _insertThread = new Thread(() => InsertItems(count));
-        _insertThread.Start();
 
-        btnRun.IsEnabled = false;
+        UserService userService = new(_cancellationToken);
+        userService.InsertUserEvent += UserService_InsertUserEvent;
+
+        pbStatus.Maximum = count;
+        var task = new Task(() => userService.InsertRandomUserAsync((int)count));
+        var time = await Helpers.Timer.TimeAsync(task);
+        MessageBox.Show($"Runtime {time}");
+        
+        
+        btnRun.IsEnabled = true;
+        // _insertThread = new Thread(() => InsertItems(count));
+        // _insertThread.Start();
+
         _manualResetEvent.Set();
     }
 
@@ -159,5 +170,29 @@ public partial class MainWindow : Window
         MessageBox.Show(
             $"Час із потоками: {lengthThreads} \nЧас без потоків: {lengthSync}\nБез потоків повільніше у {ratio} разів",
             "Результат");
+    }
+
+    private async void BtnRunDapper_OnClick(object sender, RoutedEventArgs e)
+    {
+        _ctSource = new CancellationTokenSource();
+        _cancellationToken = _ctSource.Token;
+        //MessageBox.Show("Add items " + txtCount.Text);
+        btnRunDapper.IsEnabled = false;
+        double count = double.Parse(txtCount.Text);
+        UserService userService = new UserService(_cancellationToken);
+        userService.InsertUserEvent += UserService_InsertUserEvent;
+    
+        pbStatus.Maximum = count;
+        var task = new Task(() => userService.InsertRandomUserDapperAsync((int)count));
+        var time = await Helpers.Timer.TimeAsync(task);
+
+        MessageBox.Show($"Runtime {time}");
+    
+    
+        btnRun.IsEnabled = true;
+        
+        //Запускаємо, але потік поки не блокуємо.
+        _manualResetEvent.Set();
+        
     }
 }

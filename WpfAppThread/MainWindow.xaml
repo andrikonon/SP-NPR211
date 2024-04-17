@@ -12,6 +12,11 @@
                 Content="Додати дані" HorizontalAlignment="Left"
                 Margin="223, 42, 0, 0" VerticalAlignment="Top"
                 Height="39" Width="129" FontSize="14" Click="btnRun_Click"/>
+        <Button Name="btnRunDapper" 
+                IsEnabled="True"
+                Content="Додати дані(Dapper)" HorizontalAlignment="Left"
+                Margin="223, 92, 0, 0" VerticalAlignment="Top"
+                Height="39" Width="129" FontSize="12" Click="BtnRunDapper_OnClick"/>
         <Button Name="btnCancel" 
                 IsEnabled="False"
                 Content="Скасувати" HorizontalAlignment="Left"
