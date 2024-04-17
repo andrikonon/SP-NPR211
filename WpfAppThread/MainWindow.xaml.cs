@@ -60,7 +60,7 @@ public partial class MainWindow : Window
         userService.InsertUserEvent += UserService_InsertUserEvent;
 
         pbStatus.Maximum = count;
-        var task = new Task(() => userService.InsertRandomUserAsync((int)count));
+        var task = new Task(() => userService.InsertRandomUserAsync((int)count), _cancellationToken);
         var time = await Helpers.Timer.TimeAsync(task);
         MessageBox.Show($"Runtime {time}");
         
@@ -142,7 +142,7 @@ public partial class MainWindow : Window
                 Task task = new Task(() =>
                 {
                     ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
-                });
+                }, _cancellationToken);
                 task.Start();
                 tasks.Add(task);
             }
@@ -177,7 +177,7 @@ public partial class MainWindow : Window
         userService.InsertUserEvent += UserService_InsertUserEvent;
     
         pbStatus.Maximum = count;
-        var task = new Task(() => userService.InsertRandomUserDapperAsync((int)count));
+        var task = new Task(() => userService.InsertRandomUserDapperAsync((int)count), _cancellationToken);
         var time = await Helpers.Timer.TimeAsync(task);
 
         MessageBox.Show($"Runtime {time}");
