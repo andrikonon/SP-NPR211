@@ -23,12 +23,4 @@
       <None Remove="bin\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="bin\Debug\net7.0\1. Threads.deps.json" />
-      <Content Include="bin\Debug\net7.0\1. Threads.dll" />
-      <Content Include="bin\Debug\net7.0\1. Threads.exe" />
-      <Content Include="bin\Debug\net7.0\1. Threads.pdb" />
-      <Content Include="bin\Debug\net7.0\1. Threads.runtimeconfig.json" />
-    </ItemGroup>
-
 </Project>

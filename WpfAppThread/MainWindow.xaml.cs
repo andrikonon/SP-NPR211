@@ -29,7 +29,6 @@ public partial class MainWindow : Window
 {
     private static ManualResetEvent _manualResetEvent = new(false);
     private bool _isSuspended = false;
-    private Thread _insertThread;
     private CancellationTokenSource _ctSource;
     private CancellationToken _cancellationToken;
 
@@ -67,8 +66,6 @@ public partial class MainWindow : Window
         
         
         btnRun.IsEnabled = true;
-        // _insertThread = new Thread(() => InsertItems(count));
-        // _insertThread.Start();
 
         _manualResetEvent.Set();
     }
@@ -125,7 +122,7 @@ public partial class MainWindow : Window
         _manualResetEvent.WaitOne(Timeout.Infinite);
     }
 
-    private void BtnAddDragons_OnClick(object sender, RoutedEventArgs e)
+    private async void BtnAddDragons_OnClick(object sender, RoutedEventArgs e)
     {
         const int count = 1000;
         Dispatcher.Invoke(() =>
@@ -136,24 +133,21 @@ public partial class MainWindow : Window
         
         UserService userService = new();
         userService.InsertUserEvent += UserService_InsertUserEvent;
-        List<Thread> threads = new();
+        List<Task> tasks = new();
 
-        var lengthThreads = Helpers.Timer.Time(() =>
+        var lengthTasks = Helpers.Timer.Time(async () =>
         {
             for (int _ = 0; _ < count; _++)
             {
-                Thread thread = new Thread(() =>
+                Task task = new Task(() =>
                 {
                     ImageLoader.SaveImage(new Uri(@"https://loremflickr.com/320/240"), "dragons");
                 });
-                thread.Start();
-                threads.Add(thread);
+                task.Start();
+                tasks.Add(task);
             }
 
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
+            await Task.WhenAll(tasks);
         });
 
 
@@ -165,10 +159,10 @@ public partial class MainWindow : Window
             }
         });
         
-        var ratio = lengthSync / lengthThreads;
+        var ratio = lengthSync / lengthTasks;
         
         MessageBox.Show(
-            $"Час із потоками: {lengthThreads} \nЧас без потоків: {lengthSync}\nБез потоків повільніше у {ratio} разів",
+            $"Час із потоками: {lengthTasks} \nЧас без потоків: {lengthSync}\nБез потоків повільніше у {ratio} разів",
             "Результат");
     }
 

@@ -11,14 +11,59 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="bin\Release\net7.0\Helpers.deps.json" />
+      <Content Include="bin\Release\net7.0\Helpers.dll" />
+      <Content Include="bin\Release\net7.0\Helpers.pdb" />
+      <Content Include="obj\Debug\net7.0\Helpers.AssemblyInfoInputs.cache" />
+      <Content Include="obj\Debug\net7.0\Helpers.assets.cache" />
+      <Content Include="obj\Debug\net7.0\Helpers.csproj.AssemblyReference.cache" />
+      <Content Include="obj\Debug\net7.0\Helpers.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\net7.0\Helpers.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Debug\net7.0\Helpers.dll" />
+      <Content Include="obj\Debug\net7.0\Helpers.GeneratedMSBuildEditorConfig.editorconfig" />
+      <Content Include="obj\Debug\net7.0\Helpers.pdb" />
+      <Content Include="obj\Debug\net7.0\Helpers.sourcelink.json" />
+      <Content Include="obj\Debug\net7.0\refint\Helpers.dll" />
+      <Content Include="obj\Debug\net7.0\ref\Helpers.dll" />
+      <Content Include="obj\Helpers.csproj.nuget.dgspec.json" />
+      <Content Include="obj\Helpers.csproj.nuget.g.props" />
+      <Content Include="obj\Helpers.csproj.nuget.g.targets" />
+      <Content Include="obj\project.assets.json" />
+      <Content Include="obj\project.nuget.cache" />
+      <Content Include="obj\project.packagespec.json" />
+      <Content Include="obj\Release\net7.0\Helpers.AssemblyInfoInputs.cache" />
+      <Content Include="obj\Release\net7.0\Helpers.assets.cache" />
+      <Content Include="obj\Release\net7.0\Helpers.csproj.AssemblyReference.cache" />
+      <Content Include="obj\Release\net7.0\Helpers.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Release\net7.0\Helpers.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Release\net7.0\Helpers.dll" />
+      <Content Include="obj\Release\net7.0\Helpers.GeneratedMSBuildEditorConfig.editorconfig" />
+      <Content Include="obj\Release\net7.0\Helpers.pdb" />
+      <Content Include="obj\Release\net7.0\Helpers.sourcelink.json" />
+      <Content Include="obj\Release\net7.0\refint\Helpers.dll" />
+      <Content Include="obj\Release\net7.0\ref\Helpers.dll" />
+      <Content Include="obj\rider.project.model.nuget.info" />
+      <Content Include="obj\rider.project.restore.info" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
+      <Compile Include="obj\Debug\net7.0\Helpers.AssemblyInfo.cs" />
+      <Compile Include="obj\Debug\net7.0\Helpers.GlobalUsings.g.cs" />
+      <Compile Include="obj\Release\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
+      <Compile Include="obj\Release\net7.0\Helpers.AssemblyInfo.cs" />
+      <Compile Include="obj\Release\net7.0\Helpers.GlobalUsings.g.cs" />
+      <Compile Remove="bin\**" />
       <Compile Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Remove="bin\**" />
       <EmbeddedResource Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="bin\**" />
       <None Remove="obj\**" />
     </ItemGroup>
 
